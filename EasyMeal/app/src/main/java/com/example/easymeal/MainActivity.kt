@@ -21,10 +21,24 @@ class MainActivity : AppCompatActivity() {
         btnSearchByMeal = findViewById(R.id.btnSearchMeal)
 
         btnAddMealsDB.setOnClickListener { addMealsToDB() }
+        btnSearchByIngredient.setOnClickListener { searchByIngredient() }
+        btnSearchByMeal.setOnClickListener { searchByMeal() }
     }
 
     private fun addMealsToDB(){
         val openAddMealsToDB = Intent(this, AddMealsToDB::class.java)
         startActivity(openAddMealsToDB)
     }
+
+    private fun searchByIngredient(){
+        val openSearchByIngredient = Intent(this, SearchByIngredient::class.java)
+        startActivity(openSearchByIngredient)
+    }
+
+    private fun searchByMeal(){
+        val openSearchByMeal = Intent(this, SearchByMeal::class.java)
+        startActivity(openSearchByMeal)
+    }
+
+
 }
