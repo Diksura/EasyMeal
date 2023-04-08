@@ -6,4 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".SearchByIngredient">
 
+
+    <EditText
+        android:id="@+id/inputSearchByIngredient"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:background="@drawable/round_corner_input_bar"
+        android:text="Carrot, cabbage, chicken, milk etc"
+        android:textAlignment="center"
+        android:textColor="#A1A195"
+        app:layout_constraintEnd_toStartOf="@+id/btnSearchIngredient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="267dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="72dp"
+        android:text="@string/txt_search_by_ingredient"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnSearchIngredient"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_btn"
+        android:contentDescription="@string/txt_search_by_ingredient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/inputSearchByIngredient"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btn_search" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
