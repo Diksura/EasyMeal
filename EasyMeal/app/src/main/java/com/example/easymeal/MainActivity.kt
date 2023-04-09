@@ -1,8 +1,12 @@
 package com.example.easymeal
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +30,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addMealsToDB(){
-        val openAddMealsToDB = Intent(this, AddMealsToDB::class.java)
-        startActivity(openAddMealsToDB)
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.activity_add_meals_to_db)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.show()
     }
 
     private fun searchByIngredient(){
