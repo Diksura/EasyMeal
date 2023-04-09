@@ -9,18 +9,17 @@
 
     <EditText
         android:id="@+id/inputSearchByIngredient"
-        android:layout_width="320dp"
+        android:layout_width="378dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:layout_marginEnd="10dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:autofillHints=""
         android:background="@drawable/round_corner_input_bar"
-        android:text="Carrot, cabbage, chicken, milk etc"
-        android:textAlignment="center"
-        android:textColor="#A1A195"
-        app:layout_constraintEnd_toStartOf="@+id/btnSearchIngredient"
+        android:ems="10"
+        android:hint="Carrot, cabbage, chicken, milk etc"
+        android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -38,18 +37,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btnSearchIngredient"
-        android:layout_width="50dp"
+    <Button
+        android:id="@+id/btnRetrieveMeals"
+        android:layout_width="180dp"
         android:layout_height="50dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_btn"
-        android:contentDescription="@string/txt_search_by_ingredient"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/round_corner_input_bar"
+        android:text="@string/retrieve_meals"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/inputSearchByIngredient"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btn_search" />
+        app:layout_constraintTop_toBottomOf="@+id/inputSearchByIngredient" />
+
+    <Button
+        android:id="@+id/btnSaveMeals"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/round_corner_input_bar"
+        android:text="@string/save_meals"
+        app:layout_constraintEnd_toStartOf="@+id/btnRetrieveMeals"
+        app:layout_constraintTop_toBottomOf="@+id/inputSearchByIngredient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

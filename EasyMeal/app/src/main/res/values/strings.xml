@@ -5,4 +5,6 @@
     <string name="add_meals">Add Meals to DB</string>
     <string name="txt_search_by_ingredient">Search By Ingredient</string>
     <string name="search_by_meal">Search By Meal</string>
+    <string name="retrieve_meals">Retrieve Meals</string>
+    <string name="save_meals">Save meals</string>
 </resources>
