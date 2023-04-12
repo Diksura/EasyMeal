@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.activity_add_meals_to_db)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
