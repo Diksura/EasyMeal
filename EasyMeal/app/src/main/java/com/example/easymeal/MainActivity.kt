@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.Button
 import androidx.room.Room
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addMealsToDB(){
-        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "MyDatabase").allowMainThreadQueries().build()
+        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
 
         runBlocking {
@@ -62,16 +63,14 @@ class MainActivity : AppCompatActivity() {
                 mealDao.insertMeal(beefBanhMiBowls)
                 mealDao.insertMeal(leblebiSoup)
 
-                val meals: List<Meal> = mealDao.getAll()
-                for (meal_ in meals){
-                    println(meal_)
-                }
+
+                Log.i("checkStatDB", mealDao.getAll().toString())
             }
         }
 
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.activity_add_meals_to_db)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
