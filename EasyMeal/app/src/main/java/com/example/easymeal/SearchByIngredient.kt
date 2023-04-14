@@ -29,9 +29,9 @@ class SearchByIngredient : AppCompatActivity() {
 
     var mealsArr = arrayListOf<Meal>()
 
-    lateinit var btnSearch: Button
-    lateinit var btnSaveMeals: Button
-    lateinit var edTxtSearchBar: EditText
+    private lateinit var btnSearch: Button
+    private lateinit var btnSaveMeals: Button
+    private lateinit var edTxtSearchBar: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
