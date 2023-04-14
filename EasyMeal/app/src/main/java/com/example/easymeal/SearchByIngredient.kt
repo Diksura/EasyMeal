@@ -41,12 +41,14 @@ class SearchByIngredient : AppCompatActivity() {
         btnSaveMeals = findViewById(R.id.btnSaveMeals)
         edTxtSearchBar = findViewById(R.id.inputSearchByIngredient)
 
-        btnSaveMeals.isVisible = false
+//        btnSaveMeals.isVisible = false
+//
+//        btnSearch.setOnClickListener {  }
+//
+//        Log.i("testNet", "Network Stat : ${networkAvailability()}")
+//        readFromWeb()
 
-        btnSearch.setOnClickListener {  }
-
-        Log.i("testNet", "Network Stat : ${networkAvailability()}")
-        readFromWeb()
+        networkNotAvailableError()
     }
 
 
@@ -98,4 +100,17 @@ class SearchByIngredient : AppCompatActivity() {
 
         return networkInfo?.isConnectedOrConnecting?:false
     }
+
+    private fun networkNotAvailableError(){
+        if (!networkAvailability()){
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.network_erroe_popup)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            dialog.show()
+        }
+    }
+
 }
