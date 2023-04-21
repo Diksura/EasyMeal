@@ -22,8 +22,6 @@ import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
 
-//    val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
-//    val mealDao = db.mealDao()
 
     private lateinit var btnAddMealsDB : Button
     private lateinit var btnSearchByIngredient : Button
