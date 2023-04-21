@@ -12,7 +12,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.example.easymeal.database.Meal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,7 +170,7 @@ class SearchByIngredient : AppCompatActivity() {
             val dialog = Dialog(this)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(false)
-            dialog.setContentView(R.layout.network_erroe_popup)
+            dialog.setContentView(R.layout.network_error_popup)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             val btnRetry: Button = dialog.findViewById(R.id.btnRetry)
