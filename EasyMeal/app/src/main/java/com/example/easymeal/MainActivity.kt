@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 val meals: List<Meal> = mealDao.getAll()
                 for (meal_ in meals) {
                     println(meal_)
-//                    Log.i("checkStatDB", meal_.toString())
+                    Log.i("checkStatDB", meal_.toString())
 
                 }
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//                Log.i("checkStatDB", mealDao.getAll().toString())
+                Log.i("checkStatDB", mealDao.getAll().toString())
                 // To Here
             }
         }
