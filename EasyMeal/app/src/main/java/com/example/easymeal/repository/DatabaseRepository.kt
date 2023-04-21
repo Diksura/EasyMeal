@@ -4,7 +4,7 @@ import android.widget.EditText
 
 class DatabaseRepository {
 
-    public fun getSearchInputName(editText: EditText): String{
+    fun getSearchInputName(editText: EditText): String{
         val inputNm = editText.text.toString()
         editText.text.clear()
 
