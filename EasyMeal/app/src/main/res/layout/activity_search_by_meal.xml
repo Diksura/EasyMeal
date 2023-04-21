@@ -17,13 +17,13 @@
         android:text="@string/search_by_meal"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtSearchNm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editTxtSearchNm"
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
@@ -47,9 +47,19 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/round_btn"
         android:contentDescription="@string/txt_search_by_ingredient"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toEndOf="@+id/editTxtSearchNm"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/btn_search" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginBottom="359dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
