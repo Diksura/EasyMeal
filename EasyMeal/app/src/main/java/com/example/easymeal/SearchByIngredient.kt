@@ -12,7 +12,9 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.room.Room
 import com.example.easymeal.database.Meal
+import com.example.easymeal.database.MealsDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -46,6 +48,8 @@ class SearchByIngredient : AppCompatActivity() {
 //
 //        Log.i("testNet", "Network Stat : ${networkAvailability()}")
 //        readFromWeb()
+
+        btnSaveMeals.setOnClickListener { addAllMealsToDB() }
 
         networkNotAvailableError()
     }
@@ -154,6 +158,27 @@ class SearchByIngredient : AppCompatActivity() {
 
         }
     }
+
+    fun addAllMealsToDB(){
+        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
+        val mealDao = db.mealDao()
+
+        runBlocking {
+            launch {
+                mealDao.insertSetOfMeals(mealsArr)
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     // For check network status if users is online of not
