@@ -18,7 +18,7 @@ import com.example.easymeal.database.MealsDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class RepAddMealsToDB {
+class AddMealsToDBRepository {
 
     fun processAddMealsToDB(context: Context){
 
