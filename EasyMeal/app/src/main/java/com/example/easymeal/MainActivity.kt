@@ -1,22 +1,13 @@
 package com.example.easymeal
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
 import android.widget.Button
-import android.widget.TextView
 import androidx.room.Room
-import com.example.easymeal.dataAdding.beefBanhMiBowls
-import com.example.easymeal.dataAdding.chickenMarengo
-import com.example.easymeal.dataAdding.leblebiSoup
-import com.example.easymeal.dataAdding.sweetAndSourPork
-import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
+import com.example.easymeal.repository.RepAddMealsToDB
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -31,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Deleting existing data saved in database.
+        deleteDB()
 
         btnAddMealsDB = findViewById(R.id.btnAddMeal)
         btnSearchByIngredient = findViewById(R.id.btnSearchIngredient)
@@ -52,6 +46,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addMealsToDB(){
+        val callAddMealsToDB = RepAddMealsToDB()
+        callAddMealsToDB.processAddMealsToDB(this)
+
+
+        /*
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
 
@@ -131,7 +130,23 @@ class MainActivity : AppCompatActivity() {
 
 
         dialog.show()
+
+         */
     }
+
+
+    private fun deleteDB(){
+        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
+        val mealDao = db.mealDao()
+
+        runBlocking {
+            launch {
+                mealDao.deleteAll()
+                Log.i("checkStatDBDel", mealDao.getAll().toString())
+            }
+        }
+    }
+
 
 
 
