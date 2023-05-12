@@ -31,8 +31,6 @@ class SearchByMeal : AppCompatActivity() {
             getDataFromDB()
         }
 
-//        deleteDB()
-
     }
 
 
@@ -46,14 +44,9 @@ class SearchByMeal : AppCompatActivity() {
         val dbRepo = DatabaseRepository()
         val searchName = dbRepo.getSearchInputName(searchEditText)
 
-        val sampleTxtView: TextView = findViewById(R.id.textView12)
-//        sampleTxtView.text = searchName
-
-
-
         runBlocking {
             launch {
-                searchResultMealsList = mealDao.getSearchMeals("$sampleTxtView%") as ArrayList<Meal>
+                searchResultMealsList = mealDao.getSearchMeals("%$searchName%") as ArrayList<Meal>
             }
         }
 
