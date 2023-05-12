@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.room.Room
 import com.example.easymeal.database.MealsDatabase
-import com.example.easymeal.repository.RepAddMealsToDB
+import com.example.easymeal.repository.AddMealsToDBRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addMealsToDB(){
-        val callAddMealsToDB = RepAddMealsToDB()
+        val callAddMealsToDB = AddMealsToDBRepository()
         callAddMealsToDB.processAddMealsToDB(this)
 
 
