@@ -38,7 +38,7 @@ class SearchByMeal : AppCompatActivity() {
 
     fun getDataFromDB(){
 
-        var searchResultMealsList = arrayListOf<Meal>()
+        var searchResultMealsList = mutableListOf<Meal>()
 
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
@@ -53,17 +53,32 @@ class SearchByMeal : AppCompatActivity() {
 
         runBlocking {
             launch {
-                searchResultMealsList = mealDao.getSearchMeals(searchName) as ArrayList<Meal>
-
-                for (i in 0 until searchResultMealsList.size){
-                    val otPt = "Meal :" + i + " ," + searchResultMealsList[i].strMeal + " ," + searchResultMealsList[i].strArea
-                    sampleTxtView.text = otPt
-                }
-
+                searchResultMealsList = mealDao.getSearchMeals() as ArrayList<Meal>
             }
         }
 
+        viewMeals(searchResultMealsList)
+
     }
+
+    fun viewMeals(mealsArr: MutableList<Meal>){
+        val tv: TextView = findViewById(R.id.textView12)
+
+        runBlocking {
+            launch {
+                val mealsText = StringBuilder()
+
+                for (i in 0 until mealsArr.size){
+                    mealsText.append(mealsArr[i].strMeal.toString()).append("\n")
+                }
+
+                tv.text = mealsText.toString()
+            }
+        }
+    }
+
+
+
 
 
 
