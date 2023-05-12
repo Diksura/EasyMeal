@@ -12,9 +12,11 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.room.Room
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
+import com.example.easymeal.repository.UtilityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -34,6 +36,8 @@ class SearchByIngredient : AppCompatActivity() {
     private lateinit var btnSaveMeals: Button
     private lateinit var edTxtSearchBar: EditText
 
+    val utilityRepo = UtilityRepository()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_by_ingredient)
@@ -42,23 +46,35 @@ class SearchByIngredient : AppCompatActivity() {
         btnSaveMeals = findViewById(R.id.btnSaveMeals)
         edTxtSearchBar = findViewById(R.id.inputSearchByIngredient)
 
-//        btnSaveMeals.isVisible = false
-//
-//        btnSearch.setOnClickListener {  }
-//
-//        Log.i("testNet", "Network Stat : ${networkAvailability()}")
-//        readFromWeb()
 
-        btnSaveMeals.setOnClickListener { addAllMealsToDB() }
+        btnSaveMeals.isVisible = false
 
-        networkNotAvailableError()
+        if (!networkAvailability()){
+            networkNotAvailableError()
+        }
+
+        btnSearch.setOnClickListener {
+            readFromWeb()
+            viewMeals()
+            btnSaveMeals.isVisible = true
+        }
+
+        btnSaveMeals.setOnClickListener {
+            addAllMealsToDB()
+
+        }
     }
 
+    fun getSearchName(inputText: EditText): String{
+        val userInput = inputText.text.toString()
+
+        return "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+    }
 
     fun readFromWeb(){
-        var stringBuilder = StringBuilder()
+        val stringBuilder = StringBuilder()
 
-        var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=rice"
+        val url_string = getSearchName(edTxtSearchBar)
         val url = URL(url_string)
         val connect : HttpURLConnection = url.openConnection() as HttpURLConnection
 
@@ -90,9 +106,13 @@ class SearchByIngredient : AppCompatActivity() {
         allMeals.append(jsonArray)
         Log.i("allBooks", allMeals.toString())
 
+        /** ----- Additional thing ----- */
         // adding all json string to list
-        val tv: TextView = findViewById(R.id.tv)
-        tv.setText(allMeals)
+//        runOnUiThread {
+//            val tv: TextView = findViewById(R.id.tv)
+//            tv.text = allMeals.toString()
+//        }
+        /** To here */
 
         //adding single data to Meal class
         for (i in 0 until jsonArray.length()){
@@ -166,6 +186,25 @@ class SearchByIngredient : AppCompatActivity() {
         runBlocking {
             launch {
                 mealDao.insertSetOfMeals(mealsArr)
+            }
+        }
+
+        utilityRepo.makeToast(this,"Meals Successfully Added", true)
+
+    }
+
+    fun viewMeals(){
+        val tv: TextView = findViewById(R.id.tv)
+
+        runBlocking {
+            launch {
+                val mealsText = StringBuilder()
+
+                for (i in 0 until mealsArr.size){
+                    mealsText.append(mealsArr[i].strMeal.toString()).append("\n")
+                }
+
+                tv.text = mealsText.toString()
             }
         }
     }
