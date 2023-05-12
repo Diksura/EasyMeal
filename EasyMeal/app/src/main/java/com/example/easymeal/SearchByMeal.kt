@@ -53,7 +53,7 @@ class SearchByMeal : AppCompatActivity() {
 
         runBlocking {
             launch {
-                searchResultMealsList = mealDao.getSearchMeals() as ArrayList<Meal>
+                searchResultMealsList = mealDao.getSearchMeals("$sampleTxtView%") as ArrayList<Meal>
             }
         }
 
