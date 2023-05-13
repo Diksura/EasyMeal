@@ -59,21 +59,17 @@
         app:layout_constraintEnd_toStartOf="@+id/btnRetrieveMeals"
         app:layout_constraintTop_toBottomOf="@+id/inputSearchByIngredient" />
 
-    <ScrollView
-        android:layout_width="409dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchByIngRclView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRetrieveMeals">
-
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:textSize="24sp" />
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/btnRetrieveMeals"
+        app:spanCount="2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
