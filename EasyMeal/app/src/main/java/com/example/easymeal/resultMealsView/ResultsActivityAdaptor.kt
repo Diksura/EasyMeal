@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.example.easymeal.R
 import com.example.easymeal.database.Meal
 
@@ -24,6 +26,7 @@ class ResultsActivityAdaptor(val context: Context, val mealsList: MutableList<Me
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val meal = mealsList[position]
 
+
         with(holder){
             resultMealName?.let {
                 it.text = meal.strMeal
@@ -33,6 +36,15 @@ class ResultsActivityAdaptor(val context: Context, val mealsList: MutableList<Me
             resultMealCategory?.let {
                 it.text = meal.strCategory
                 it.contentDescription = meal.strCategory
+            }
+
+            resltMealThumbnail?.let {imageView ->
+                val imageLoader = ImageLoader(context)
+                val request = ImageRequest.Builder(context)
+                    .data(meal.strMealThumb)
+                    .target(imageView)
+                    .build()
+                imageLoader.enqueue(request)
             }
 
         }
