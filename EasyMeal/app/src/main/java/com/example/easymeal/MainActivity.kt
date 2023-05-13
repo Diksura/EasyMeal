@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchByMeal(){
-        val openSearchByMeal = Intent(this, MainActivity22::class.java)
+        val openSearchByMeal = Intent(this, SearchByMeal::class.java)
         startActivity(openSearchByMeal)
     }
 
