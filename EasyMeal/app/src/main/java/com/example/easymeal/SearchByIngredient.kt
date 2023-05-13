@@ -11,12 +11,14 @@ import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.easymeal.dataAdding.MealsList
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
 import com.example.easymeal.repository.UtilityRepository
+import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -30,7 +32,9 @@ import java.net.URL
 
 class SearchByIngredient : AppCompatActivity() {
 
-    var mealsArr = arrayListOf<Meal>()
+//    var mealsArr = mutableListOf<Meal>()
+    val getMealsList = MealsList()
+    var mealsArr =  getMealsList.mealsArr
 
     private lateinit var btnSearch: Button
     private lateinit var btnSaveMeals: Button
@@ -55,7 +59,13 @@ class SearchByIngredient : AppCompatActivity() {
 
         btnSearch.setOnClickListener {
             readFromWeb()
-            viewMeals()
+//            viewMeals()
+
+            val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
+
+            val adapter = ResultsActivityAdaptor(this, mealsArr)
+            recyclerView.adapter = adapter
+
             btnSaveMeals.isVisible = true
         }
 
@@ -193,7 +203,7 @@ class SearchByIngredient : AppCompatActivity() {
 
     }
 
-    fun viewMeals(){
+/*    fun viewMeals(){
         val tv: TextView = findViewById(R.id.tv)
 
         runBlocking {
@@ -207,7 +217,7 @@ class SearchByIngredient : AppCompatActivity() {
                 tv.text = mealsText.toString()
             }
         }
-    }
+    }*/
 
 
 

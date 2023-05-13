@@ -6,10 +6,12 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
 import com.example.easymeal.repository.DatabaseRepository
+import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -55,19 +57,11 @@ class SearchByMeal : AppCompatActivity() {
     }
 
     fun viewMeals(mealsArr: MutableList<Meal>){
-        val tv: TextView = findViewById(R.id.textView12)
 
-        runBlocking {
-            launch {
-                val mealsText = StringBuilder()
+        val recyclerView: RecyclerView = findViewById(R.id.searchByMealRclView)
 
-                for (i in 0 until mealsArr.size){
-                    mealsText.append(mealsArr[i].strMeal.toString()).append("\n")
-                }
-
-                tv.text = mealsText.toString()
-            }
-        }
+        val adapter = ResultsActivityAdaptor(this, mealsArr)
+        recyclerView.adapter = adapter
     }
 
 
