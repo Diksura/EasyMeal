@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.room.Room
+import com.example.easymeal.dataAdding.MealsList
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
 import com.example.easymeal.repository.UtilityRepository
@@ -30,7 +31,9 @@ import java.net.URL
 
 class SearchByIngredient : AppCompatActivity() {
 
-    var mealsArr = arrayListOf<Meal>()
+//    var mealsArr = mutableListOf<Meal>()
+    val getMealsList = MealsList()
+    var mealsArr =  getMealsList.mealsArr
 
     private lateinit var btnSearch: Button
     private lateinit var btnSaveMeals: Button
