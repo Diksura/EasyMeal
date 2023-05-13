@@ -251,7 +251,7 @@ class SearchByIngredient : AppCompatActivity() {
             val btnBack: Button = dialog.findViewById(R.id.btnBack)
 
             btnRetry.setOnClickListener {
-                if (!networkAvailability()){
+                if (networkAvailability()){
                     dialog.dismiss()
                 }
             }
