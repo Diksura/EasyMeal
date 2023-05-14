@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AndroidException
+import android.util.AndroidRuntimeException
 import android.util.Log
 import android.view.Window
 import android.widget.Button
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -60,7 +63,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         btnSearch.setOnClickListener {
             mealsArr.clear()
-            readFromWeb()
+            readWebByIngredient()
 //            viewMeals()
 
             val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
@@ -79,13 +82,61 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
     fun getSearchName(inputText: EditText): String{
         val userInput = inputText.text.toString()
 
-        return "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+        return "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
     }
 
-    fun readFromWeb(){
-        val stringBuilder = StringBuilder()
+
+    fun readWebByIngredient(){
+        val ingredientStringBuilder = StringBuilder()
 
         val url_string = getSearchName(edTxtSearchBar)
+        val urlIngredient = URL(url_string)
+        val connectURL : HttpURLConnection = urlIngredient.openConnection() as HttpURLConnection
+
+        runBlocking {
+            launch {
+                withContext(Dispatchers.IO){
+                    var ingredientBufReader = BufferedReader(InputStreamReader(connectURL.inputStream))
+                    var ingredientsLine: String? = ingredientBufReader.readLine()
+
+                    while (ingredientsLine != null){
+                        ingredientStringBuilder.append(ingredientsLine + "\n")
+                        ingredientsLine = ingredientBufReader.readLine()
+                    }
+
+                    parseIngredientJSON(ingredientStringBuilder)
+                }
+            }
+        }
+
+    }
+
+    fun parseIngredientJSON(stb: java.lang.StringBuilder){
+        val jsonIngredient = JSONObject(stb.toString())
+        val mealsIngredient = java.lang.StringBuilder()
+
+        try{
+            var ingredientJsonArray: JSONArray = jsonIngredient.getJSONArray("meals")
+
+            mealsIngredient.append(ingredientJsonArray)
+
+            var eachIngredient = ""
+            for (ing in 0 until ingredientJsonArray.length()) {
+                val ingredient: JSONObject = ingredientJsonArray[ing] as JSONObject
+
+                eachIngredient = ingredient["idMeal"] as String
+                readFromWeb(eachIngredient)
+            }
+
+        } catch (e: JSONException ){
+
+        }
+    }
+
+    fun readFromWeb(eachIngredient: String){
+        val stringBuilder = StringBuilder()
+
+        val url_string = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=$eachIngredient"
         val url = URL(url_string)
         val connect : HttpURLConnection = url.openConnection() as HttpURLConnection
 
@@ -117,13 +168,6 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         allMeals.append(jsonArray)
         Log.i("allBooks", allMeals.toString())
 
-        /** ----- Additional thing ----- */
-        // adding all json string to list
-//        runOnUiThread {
-//            val tv: TextView = findViewById(R.id.tv)
-//            tv.text = allMeals.toString()
-//        }
-        /** To here */
 
         //adding single data to Meal class
         for (i in 0 until jsonArray.length()){
@@ -189,6 +233,21 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     fun addAllMealsToDB(){
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
