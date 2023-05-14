@@ -20,6 +20,8 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
     private lateinit var searchEditText: EditText
     private lateinit var searchBtn: ImageButton
 
+    private var searchName = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_by_meal)
@@ -30,21 +32,18 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
 
 
         searchBtn.setOnClickListener {
-            getDataFromDB()
+            searchName = searchEditText.text.toString()
+            getDataFromDB(searchName)
         }
 
     }
 
-
-    fun getDataFromDB(){
+    fun getDataFromDB(searchName: String){
 
         var searchResultMealsList = mutableListOf<Meal>()
 
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
-
-        val dbRepo = DatabaseRepository()
-        val searchName = dbRepo.getSearchInputName(searchEditText)
 
         runBlocking {
             launch {
@@ -64,16 +63,6 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
         recyclerView.adapter = adapter
     }
 
-
-
-
-
-
-
-
-
-
-
     private fun deleteDB(){
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
@@ -89,5 +78,18 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
     override fun onMealItemClick(meal: Meal) {
         val callMealOnClickPopUp = MealOnClickPopUp()
         callMealOnClickPopUp.mealDetailsPopUp(this,meal)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("searchName", searchName)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        searchName =  savedInstanceState.getString("searchName").toString()
+        getDataFromDB(searchName)
     }
 }

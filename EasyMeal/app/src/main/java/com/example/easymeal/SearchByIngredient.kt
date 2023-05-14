@@ -43,6 +43,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
     private lateinit var btnSearch: Button
     private lateinit var btnSaveMeals: Button
     private lateinit var edTxtSearchBar: EditText
+    private lateinit var recyclerView: RecyclerView
 
     val utilityRepo = UtilityRepository()
     var userInput = ""
@@ -54,6 +55,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         btnSearch = findViewById(R.id.btnRetrieveMeals)
         btnSaveMeals = findViewById(R.id.btnSaveMeals)
         edTxtSearchBar = findViewById(R.id.inputSearchByIngredient)
+        recyclerView = findViewById(R.id.searchByIngRclView)
 
 
         btnSaveMeals.isVisible = false
@@ -65,12 +67,8 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         btnSearch.setOnClickListener {
             mealsArr.clear()
             getSearchName(edTxtSearchBar)
-//            viewMeals()
 
-            val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
-
-            val adapter = ResultsActivityAdaptor(this, mealsArr, this)
-            recyclerView.adapter = adapter
+            viewMealsInRecycleView()
 
             btnSaveMeals.isVisible = true
         }
@@ -86,7 +84,6 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         readWebByIngredient(url_string)
     }
-
 
     fun readWebByIngredient(url_string: String){
         val ingredientStringBuilder = StringBuilder()
@@ -235,20 +232,10 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    fun viewMealsInRecycleView(){
+        val adapter = ResultsActivityAdaptor(this, mealsArr, this)
+        recyclerView.adapter = adapter
+    }
 
     fun addAllMealsToDB(){
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
@@ -263,33 +250,6 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         utilityRepo.makeToast(this,"Meals Successfully Added", true)
 
     }
-
-/*    fun viewMeals(){
-        val tv: TextView = findViewById(R.id.tv)
-
-        runBlocking {
-            launch {
-                val mealsText = StringBuilder()
-
-                for (i in 0 until mealsArr.size){
-                    mealsText.append(mealsArr[i].strMeal.toString()).append("\n")
-                }
-
-                tv.text = mealsText.toString()
-            }
-        }
-    }*/
-
-
-
-
-
-
-
-
-
-
-
 
     // For check network status if users is online of not
     @Suppress("DEPRECATION")
@@ -324,17 +284,8 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
     override fun onMealItemClick(meal: Meal) {
         Log.i("selectMealIt", "Selected Meal: ${meal.strMeal}")
 
-//        val dialog = Dialog(this)
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dialog.setCancelable(true)
-//        dialog.setContentView(R.layout.activity_add_meals_to_db)
-//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
         val callMealOnClickPopUp = MealOnClickPopUp()
-
         callMealOnClickPopUp.mealDetailsPopUp(this,meal)
-
-//        dialog.show()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -348,15 +299,13 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         userInput = savedInstanceState.getString("userInput").toString()
 
-        val url_string = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
-        readWebByIngredient(url_string)
+        if (userInput != ""){
+            val url_string = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+            readWebByIngredient(url_string)
+            viewMealsInRecycleView()
 
-        val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
-
-        val adapter = ResultsActivityAdaptor(this, mealsArr, this)
-        recyclerView.adapter = adapter
-
-        btnSaveMeals.isVisible = true
+            btnSaveMeals.isVisible = true
+        }
     }
 
 }
