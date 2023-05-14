@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/image_of_meal"
         app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/appicon" />
+        app:srcCompat="@drawable/appicon"/>
 
     <TextView
         android:id="@+id/resultMealName"
