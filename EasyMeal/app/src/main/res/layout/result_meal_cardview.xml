@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical">
+    android:background="@drawable/grid_item_bg">
+
 
     <ImageView
         android:id="@+id/resultMealThumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Image of Meal"
+        android:contentDescription="@string/image_of_meal"
         app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/appicon" />
+        app:srcCompat="@drawable/appicon"/>
 
     <TextView
         android:id="@+id/resultMealName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:contentDescription=""
+        android:paddingLeft="10dp"
+        android:text=""
         tools:text="test" />
 
     <TextView
         android:id="@+id/resultMealCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:contentDescription=""
+        android:paddingLeft="10dp"
+        android:paddingBottom="5dp"
+        android:text=""
         tools:text="test" />
 </LinearLayout>

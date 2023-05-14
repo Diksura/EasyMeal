@@ -7,4 +7,5 @@
     <string name="search_by_meal">Search By Meal</string>
     <string name="retrieve_meals">Retrieve Meals</string>
     <string name="save_meals">Save meals</string>
+    <string name="image_of_meal">Image of Meal</string>
 </resources>

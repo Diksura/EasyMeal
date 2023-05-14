@@ -17,6 +17,7 @@ import androidx.room.Room
 import com.example.easymeal.dataAdding.MealsList
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
+import com.example.easymeal.repository.MealOnClickPopUp
 import com.example.easymeal.repository.UtilityRepository
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class SearchByIngredient : AppCompatActivity() {
+class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
 //    var mealsArr = mutableListOf<Meal>()
     val getMealsList = MealsList()
@@ -63,7 +64,7 @@ class SearchByIngredient : AppCompatActivity() {
 
             val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
 
-            val adapter = ResultsActivityAdaptor(this, mealsArr)
+            val adapter = ResultsActivityAdaptor(this, mealsArr, this)
             recyclerView.adapter = adapter
 
             btnSaveMeals.isVisible = true
@@ -159,25 +160,25 @@ class SearchByIngredient : AppCompatActivity() {
                 strIngredient19 = meal["strIngredient19"] as? String,
                 strIngredient20 = meal["strIngredient20"] as? String,
                 strMeasure1 = meal["strMeasure1"] as? String,
-                strMeasure2 = meal["strMeasure1"] as? String,
-                strMeasure3 = meal["strMeasure1"] as? String,
-                strMeasure4 = meal["strMeasure1"] as? String,
-                strMeasure5 = meal["strMeasure1"] as? String,
-                strMeasure6 = meal["strMeasure1"] as? String,
-                strMeasure7 = meal["strMeasure1"] as? String,
-                strMeasure8 = meal["strMeasure1"] as? String,
-                strMeasure9 = meal["strMeasure1"] as? String,
-                strMeasure10 = meal["strMeasure1"] as? String,
-                strMeasure11 = meal["strMeasure1"] as? String,
-                strMeasure12 = meal["strMeasure1"] as? String,
-                strMeasure13 = meal["strMeasure1"] as? String,
-                strMeasure14 = meal["strMeasure1"] as? String,
-                strMeasure15 = meal["strMeasure1"] as? String,
-                strMeasure16 = meal["strMeasure1"] as? String,
-                strMeasure17 = meal["strMeasure1"] as? String,
-                strMeasure18 = meal["strMeasure1"] as? String,
-                strMeasure19 = meal["strMeasure1"] as? String,
-                strMeasure20 = meal["strMeasure1"] as? String,
+                strMeasure2 = meal["strMeasure2"] as? String,
+                strMeasure3 = meal["strMeasure3"] as? String,
+                strMeasure4 = meal["strMeasure4"] as? String,
+                strMeasure5 = meal["strMeasure5"] as? String,
+                strMeasure6 = meal["strMeasure6"] as? String,
+                strMeasure7 = meal["strMeasure7"] as? String,
+                strMeasure8 = meal["strMeasure8"] as? String,
+                strMeasure9 = meal["strMeasure9"] as? String,
+                strMeasure10 = meal["strMeasure10"] as? String,
+                strMeasure11 = meal["strMeasure11"] as? String,
+                strMeasure12 = meal["strMeasure12"] as? String,
+                strMeasure13 = meal["strMeasure13"] as? String,
+                strMeasure14 = meal["strMeasure14"] as? String,
+                strMeasure15 = meal["strMeasure15"] as? String,
+                strMeasure16 = meal["strMeasure16"] as? String,
+                strMeasure17 = meal["strMeasure17"] as? String,
+                strMeasure18 = meal["strMeasure18"] as? String,
+                strMeasure19 = meal["strMeasure19"] as? String,
+                strMeasure20 = meal["strMeasure20"] as? String,
                 strSource = meal["strSource"] as? String,
                 strImageSource = meal["strImageSource"] as? String,
                 strCreativeCommonsConfirmed = meal["strCreativeCommonsConfirmed"] as? String,
@@ -251,13 +252,29 @@ class SearchByIngredient : AppCompatActivity() {
             val btnBack: Button = dialog.findViewById(R.id.btnBack)
 
             btnRetry.setOnClickListener {
-                if (!networkAvailability()){
+                if (networkAvailability()){
                     dialog.dismiss()
                 }
             }
 
             dialog.show()
         }
+    }
+
+    override fun onMealItemClick(meal: Meal) {
+        Log.i("selectMealIt", "Selected Meal: ${meal.strMeal}")
+
+//        val dialog = Dialog(this)
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        dialog.setCancelable(true)
+//        dialog.setContentView(R.layout.activity_add_meals_to_db)
+//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+        val callMealOnClickPopUp = MealOnClickPopUp()
+
+        callMealOnClickPopUp.mealDetailsPopUp(this,meal)
+
+//        dialog.show()
     }
 
 }
