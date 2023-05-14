@@ -45,6 +45,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
     private lateinit var edTxtSearchBar: EditText
 
     val utilityRepo = UtilityRepository()
+    var userInput = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         btnSearch.setOnClickListener {
             mealsArr.clear()
-            readWebByIngredient()
+            getSearchName(edTxtSearchBar)
 //            viewMeals()
 
             val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
@@ -79,17 +80,17 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
-    fun getSearchName(inputText: EditText): String{
-        val userInput = inputText.text.toString()
+    fun getSearchName(inputText: EditText){
+        userInput = inputText.text.toString()
+        val url_string =  "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
 
-        return "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+        readWebByIngredient(url_string)
     }
 
 
-    fun readWebByIngredient(){
+    fun readWebByIngredient(url_string: String){
         val ingredientStringBuilder = StringBuilder()
 
-        val url_string = getSearchName(edTxtSearchBar)
         val urlIngredient = URL(url_string)
         val connectURL : HttpURLConnection = urlIngredient.openConnection() as HttpURLConnection
 
@@ -334,6 +335,28 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         callMealOnClickPopUp.mealDetailsPopUp(this,meal)
 
 //        dialog.show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("userInput", userInput)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        userInput = savedInstanceState.getString("userInput").toString()
+
+        val url_string = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+        readWebByIngredient(url_string)
+
+        val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
+
+        val adapter = ResultsActivityAdaptor(this, mealsArr, this)
+        recyclerView.adapter = adapter
+
+        btnSaveMeals.isVisible = true
     }
 
 }
