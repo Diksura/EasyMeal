@@ -59,6 +59,7 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
 
         btnSearch.setOnClickListener {
+            mealsArr.clear()
             readFromWeb()
 //            viewMeals()
 
@@ -72,7 +73,6 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         btnSaveMeals.setOnClickListener {
             addAllMealsToDB()
-
         }
     }
 
