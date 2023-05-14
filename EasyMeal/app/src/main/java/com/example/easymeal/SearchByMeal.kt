@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.easymeal.database.Meal
@@ -27,7 +26,7 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
 
 
         searchEditText = findViewById(R.id.editTxtSearchNm)
-        searchBtn = findViewById(R.id.imageButton3)
+        searchBtn = findViewById(R.id.btnSearchByMeal)
 
 
         searchBtn.setOnClickListener {
