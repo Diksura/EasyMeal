@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchByMeal">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="267dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="11dp"
+        android:text="@string/search_by_meal"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtSearchWebNm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTxtSearchWebNm"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/round_corner_input_bar"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Pizza, lasagna, rice etc."
+        android:textColorHint="#FFF"
+        android:textColor="#FFF"
+        app:layout_constraintEnd_toStartOf="@+id/btnSearchByWeb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <ImageButton
+        android:id="@+id/btnSearchByWeb"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/round_btn"
+        android:contentDescription="@string/txt_search_by_ingredient"
+        app:layout_constraintStart_toEndOf="@+id/editTxtSearchWebNm"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btn_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchFromWebRclView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSearchByWeb"
+        app:spanCount="2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
