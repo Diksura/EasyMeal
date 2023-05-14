@@ -11,11 +11,12 @@ import androidx.room.Room
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
 import com.example.easymeal.repository.DatabaseRepository
+import com.example.easymeal.repository.MealOnClickPopUp
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class SearchByMeal : AppCompatActivity() {
+class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
     private lateinit var searchEditText: EditText
     private lateinit var searchBtn: ImageButton
@@ -60,7 +61,7 @@ class SearchByMeal : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.searchByMealRclView)
 
-        val adapter = ResultsActivityAdaptor(this, mealsArr)
+        val adapter = ResultsActivityAdaptor(this, mealsArr, this)
         recyclerView.adapter = adapter
     }
 
@@ -84,5 +85,10 @@ class SearchByMeal : AppCompatActivity() {
                 Log.i("checkStatDBDel", mealDao.getAll().toString())
             }
         }
+    }
+
+    override fun onMealItemClick(meal: Meal) {
+        val callMealOnClickPopUp = MealOnClickPopUp()
+        callMealOnClickPopUp.mealDetailsPopUp(this,meal)
     }
 }
