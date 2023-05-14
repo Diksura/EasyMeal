@@ -1,142 +1,61 @@
 package com.example.easymeal
 
-import android.app.Dialog
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AndroidException
-import android.util.AndroidRuntimeException
 import android.util.Log
-import android.view.Window
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.easymeal.dataAdding.MealsList
 import com.example.easymeal.database.Meal
-import com.example.easymeal.database.MealsDatabase
 import com.example.easymeal.repository.MealOnClickPopUp
-import com.example.easymeal.repository.UtilityRepository
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
+class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
-//    var mealsArr = mutableListOf<Meal>()
-    val getMealsList = MealsList()
-    var mealsArr =  getMealsList.mealsArr
+    var webSearchMealsArr = mutableListOf<Meal>()
 
-    private lateinit var btnSearch: Button
-    private lateinit var btnSaveMeals: Button
-    private lateinit var edTxtSearchBar: EditText
-
-    val utilityRepo = UtilityRepository()
+    private lateinit var btnWebSearch: ImageButton
+    private lateinit var edTxtWebSearchBar: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_by_ingredient)
+        setContentView(R.layout.activity_search_meal_from_web)
 
-        btnSearch = findViewById(R.id.btnRetrieveMeals)
-        btnSaveMeals = findViewById(R.id.btnSaveMeals)
-        edTxtSearchBar = findViewById(R.id.inputSearchByIngredient)
+        btnWebSearch = findViewById(R.id.btnSearchByWeb)
+        edTxtWebSearchBar = findViewById(R.id.editTxtSearchWebNm)
 
+        btnWebSearch.setOnClickListener {
+            webSearchMealsArr.clear()
+            readFromWeb()
 
-        btnSaveMeals.isVisible = false
-
-        if (!networkAvailability()){
-            networkNotAvailableError()
-        }
-
-        btnSearch.setOnClickListener {
-            mealsArr.clear()
-            readWebByIngredient()
-//            viewMeals()
-
-            val recyclerView: RecyclerView = findViewById(R.id.searchByIngRclView)
-
-            val adapter = ResultsActivityAdaptor(this, mealsArr, this)
+            val recyclerView: RecyclerView = findViewById(R.id.searchFromWebRclView)
+            val adapter = ResultsActivityAdaptor(this, webSearchMealsArr, this)
             recyclerView.adapter = adapter
-
-            btnSaveMeals.isVisible = true
-        }
-
-        btnSaveMeals.setOnClickListener {
-            addAllMealsToDB()
         }
     }
+
 
     fun getSearchName(inputText: EditText): String{
         val userInput = inputText.text.toString()
 
-        return "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+        return "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
     }
 
-
-    fun readWebByIngredient(){
-        val ingredientStringBuilder = StringBuilder()
-
-        val url_string = getSearchName(edTxtSearchBar)
-        val urlIngredient = URL(url_string)
-        val connectURL : HttpURLConnection = urlIngredient.openConnection() as HttpURLConnection
-
-        runBlocking {
-            launch {
-                withContext(Dispatchers.IO){
-                    var ingredientBufReader = BufferedReader(InputStreamReader(connectURL.inputStream))
-                    var ingredientsLine: String? = ingredientBufReader.readLine()
-
-                    while (ingredientsLine != null){
-                        ingredientStringBuilder.append(ingredientsLine + "\n")
-                        ingredientsLine = ingredientBufReader.readLine()
-                    }
-
-                    parseIngredientJSON(ingredientStringBuilder)
-                }
-            }
-        }
-
-    }
-
-    fun parseIngredientJSON(stb: java.lang.StringBuilder){
-        val jsonIngredient = JSONObject(stb.toString())
-        val mealsIngredient = java.lang.StringBuilder()
-
-        try{
-            var ingredientJsonArray: JSONArray = jsonIngredient.getJSONArray("meals")
-
-            mealsIngredient.append(ingredientJsonArray)
-
-            var eachIngredient = ""
-            for (ing in 0 until ingredientJsonArray.length()) {
-                val ingredient: JSONObject = ingredientJsonArray[ing] as JSONObject
-
-                eachIngredient = ingredient["idMeal"] as String
-                readFromWeb(eachIngredient)
-            }
-
-        } catch (e: JSONException ){
-
-        }
-    }
-
-    fun readFromWeb(eachIngredient: String){
+    fun readFromWeb(){
         val stringBuilder = StringBuilder()
 
-        val url_string = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=$eachIngredient"
+        val url_string = getSearchName(edTxtWebSearchBar)
         val url = URL(url_string)
         val connect : HttpURLConnection = url.openConnection() as HttpURLConnection
 
@@ -227,113 +146,17 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
                 strImageSource = meal["strImageSource"] as? String,
                 strCreativeCommonsConfirmed = meal["strCreativeCommonsConfirmed"] as? String,
                 dateModified = meal["dateModified"] as? String,
-                )
+            )
 
-            mealsArr.add(singleMeal)
+            webSearchMealsArr.add(singleMeal)
 
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    fun addAllMealsToDB(){
-        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
-        val mealDao = db.mealDao()
-
-        runBlocking {
-            launch {
-                mealDao.insertSetOfMeals(mealsArr)
-            }
-        }
-
-        utilityRepo.makeToast(this,"Meals Successfully Added", true)
-
-    }
-
-/*    fun viewMeals(){
-        val tv: TextView = findViewById(R.id.tv)
-
-        runBlocking {
-            launch {
-                val mealsText = StringBuilder()
-
-                for (i in 0 until mealsArr.size){
-                    mealsText.append(mealsArr[i].strMeal.toString()).append("\n")
-                }
-
-                tv.text = mealsText.toString()
-            }
-        }
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-    // For check network status if users is online of not
-    @Suppress("DEPRECATION")
-    private fun networkAvailability(): Boolean{
-        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-
-        return networkInfo?.isConnectedOrConnecting?:false
-    }
-
-    private fun networkNotAvailableError(){
-        if (!networkAvailability()){
-            val dialog = Dialog(this)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.network_error_popup)
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val btnRetry: Button = dialog.findViewById(R.id.btnRetry)
-            val btnBack: Button = dialog.findViewById(R.id.btnBack)
-
-            btnRetry.setOnClickListener {
-                if (networkAvailability()){
-                    dialog.dismiss()
-                }
-            }
-
-            dialog.show()
         }
     }
 
     override fun onMealItemClick(meal: Meal) {
-        Log.i("selectMealIt", "Selected Meal: ${meal.strMeal}")
-
-//        val dialog = Dialog(this)
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dialog.setCancelable(true)
-//        dialog.setContentView(R.layout.activity_add_meals_to_db)
-//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
         val callMealOnClickPopUp = MealOnClickPopUp()
-
         callMealOnClickPopUp.mealDetailsPopUp(this,meal)
-
-//        dialog.show()
     }
+
 
 }
