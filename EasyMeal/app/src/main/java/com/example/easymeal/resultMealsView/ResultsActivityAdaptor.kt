@@ -17,12 +17,14 @@ class ResultsActivityAdaptor(val context: Context, private val mealsList: Mutabl
 
     override fun getItemCount() = mealsList.size
 
+    // creating view item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.result_meal_cardview, parent, false)
         return ViewHolder(view)
     }
 
+    // managing the recycle view by creating views and recycling
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val meal = mealsList[position]
 
@@ -38,6 +40,8 @@ class ResultsActivityAdaptor(val context: Context, private val mealsList: Mutabl
                 it.contentDescription = meal.strCategory
             }
 
+            //Reference : https://developer.android.com/codelabs/basic-android-kotlin-compose-load-images#2
+            // Using given URL download the image as cache file and setting to image view.
             resultMealThumbnail?.let { imageView ->
                 val imageLoader = ImageLoader(context)
                 val request = ImageRequest.Builder(context)

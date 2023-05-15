@@ -52,21 +52,23 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
         btnSaveMeals.isVisible = false
 
+        // checking network availability and gives an error if network isn't available.
         utilityRepo.networkCheckAndGiveError()
 
         btnSearch.setOnClickListener {
 
+            // again checking network status before searching
             utilityRepo.networkCheckAndGiveError()
 
-            mealsArr.clear()
+            mealsArr.clear() // clear array if past search still exists.
             getSearchName(edTxtSearchBar)
-            viewMealsInRecycleView()
+            viewMealsInRecycleView() // calling for recycler view
 
             btnSaveMeals.isVisible = true
         }
 
         btnSaveMeals.setOnClickListener {
-            addAllMealsToDB()
+            addAllMealsToDB() // adding searched meals to database
         }
     }
 
