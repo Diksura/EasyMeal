@@ -27,6 +27,9 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
 
     private lateinit var btnWebSearch: ImageButton
     private lateinit var edTxtWebSearchBar: EditText
+    private lateinit var recyclerView: RecyclerView
+
+    var userInput = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +37,26 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
 
         btnWebSearch = findViewById(R.id.btnSearchByWeb)
         edTxtWebSearchBar = findViewById(R.id.editTxtSearchWebNm)
+        recyclerView = findViewById(R.id.searchFromWebRclView)
 
         btnWebSearch.setOnClickListener {
             webSearchMealsArr.clear()
-            readFromWeb()
 
-            val recyclerView: RecyclerView = findViewById(R.id.searchFromWebRclView)
-            val adapter = ResultsActivityAdaptor(this, webSearchMealsArr, this)
-            recyclerView.adapter = adapter
+            getSearchName(edTxtWebSearchBar)
+            viewMealsInRecycleView()
         }
     }
 
+    fun getSearchName(inputText: EditText){
+        userInput = inputText.text.toString()
 
-    fun getSearchName(inputText: EditText): String{
-        val userInput = inputText.text.toString()
-
-        return "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+        var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+        readFromWeb(url_string)
     }
 
-    fun readFromWeb(){
+    fun readFromWeb(url_string: String){
         val stringBuilder = StringBuilder()
 
-        val url_string = getSearchName(edTxtWebSearchBar)
         val url = URL(url_string)
         val connect : HttpURLConnection = url.openConnection() as HttpURLConnection
 
@@ -153,10 +154,32 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         }
     }
 
+    fun viewMealsInRecycleView(){
+        val adapter = ResultsActivityAdaptor(this, webSearchMealsArr, this)
+        recyclerView.adapter = adapter
+    }
+
     override fun onMealItemClick(meal: Meal) {
         val callMealOnClickPopUp = MealOnClickPopUp()
         callMealOnClickPopUp.mealDetailsPopUp(this,meal)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("userInput", userInput)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        userInput = savedInstanceState.getString("userInput").toString()
+
+        if (userInput != "") {
+            var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+            readFromWeb(url_string)
+            viewMealsInRecycleView()
+        }
+    }
 
 }
