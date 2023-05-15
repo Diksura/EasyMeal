@@ -4,51 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/backgroungwithicon">
 
     <Button
         android:id="@+id/btnAddMeal"
         android:layout_width="320dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="44dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/main_pg_btn_shape"
         android:text="@string/add_meals"
         app:layout_constraintBottom_toTopOf="@+id/btnSearchIngredient"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/btnSearchIngredient" />
 
     <Button
         android:id="@+id/btnSearchIngredient"
         android:layout_width="320dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="44dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/main_pg_btn_shape"
         android:text="@string/search_ingredient"
         app:layout_constraintBottom_toTopOf="@+id/btnSearchMeal"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/btnSearchMeal" />
 
     <Button
         android:id="@+id/btnSearchMeal"
         android:layout_width="320dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="44dp"
         android:layout_marginBottom="48dp"
         android:background="@drawable/main_pg_btn_shape"
         android:text="@string/search_for_meal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnSearchFromWeb"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="372dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/round_btn"
         android:contentDescription="@string/txt_search_by_ingredient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.878"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddMeal"
+        app:layout_constraintEnd_toEndOf="@+id/btnAddMeal"
         app:srcCompat="@drawable/btn_search" />
 </androidx.constraintlayout.widget.ConstraintLayout>

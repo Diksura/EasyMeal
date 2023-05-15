@@ -8,20 +8,21 @@
     android:background="@drawable/backgroungwithicon">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView2"
         android:layout_width="267dp"
         android:layout_height="37dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="100dp"
         android:text="@string/search_by_meal"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTxtSearchWebNm"
-        android:layout_width="320dp"
+        android:id="@+id/editTxtSearchNm"
+        android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/round_corner_input_bar"
@@ -30,31 +31,27 @@
         android:inputType="textPersonName"
         android:textColor="#FFF"
         android:textColorHint="#FFF"
-        app:layout_constraintEnd_toStartOf="@+id/btnSearchByWeb"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageButton
-        android:id="@+id/btnSearchByWeb"
+        android:id="@+id/btnSearchByMeal"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/round_btn"
         android:contentDescription="@string/txt_search_by_ingredient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTxtSearchWebNm"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="@+id/editTxtSearchNm"
+        app:layout_constraintTop_toBottomOf="@+id/editTxtSearchNm"
         app:srcCompat="@drawable/btn_search" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchFromWebRclView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:id="@+id/searchByMealRclView"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSearchByWeb"
+        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2" />
 
 
