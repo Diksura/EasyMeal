@@ -2,7 +2,6 @@ package com.example.easymeal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +36,7 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
 
     }
 
-    fun getDataFromDB(searchName: String){
+    private fun getDataFromDB(searchName: String){
 
         var searchResultMealsList = mutableListOf<Meal>()
 
@@ -54,24 +53,12 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
 
     }
 
-    fun viewMeals(mealsArr: MutableList<Meal>){
+    private fun viewMeals(mealsArr: MutableList<Meal>){
 
         val recyclerView: RecyclerView = findViewById(R.id.searchByMealRclView)
 
         val adapter = ResultsActivityAdaptor(this, mealsArr, this)
         recyclerView.adapter = adapter
-    }
-
-    private fun deleteDB(){
-        val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
-        val mealDao = db.mealDao()
-
-        runBlocking {
-            launch {
-                mealDao.deleteAll()
-                Log.i("checkStatDBDel", mealDao.getAll().toString())
-            }
-        }
     }
 
     override fun onMealItemClick(meal: Meal) {

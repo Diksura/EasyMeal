@@ -2,14 +2,12 @@ package com.example.easymeal.repository
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.view.Window
 import android.widget.Button
 import android.widget.Toast
-import com.example.easymeal.MainActivity
 import com.example.easymeal.R
 
 class UtilityRepository(val context: Context) {

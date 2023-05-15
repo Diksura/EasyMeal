@@ -29,16 +29,16 @@ import java.net.URL
 class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
     //    var mealsArr = mutableListOf<Meal>()
-    val getMealsList = MealsList()
-    var mealsArr = getMealsList.mealsArr
+    private val getMealsList = MealsList()
+    private var mealsArr = getMealsList.mealsArr
 
     private lateinit var btnSearch: Button
     private lateinit var btnSaveMeals: Button
     private lateinit var edTxtSearchBar: EditText
     private lateinit var recyclerView: RecyclerView
 
-    val utilityRepo = UtilityRepository(this)
-    var userInput = ""
+    private val utilityRepo = UtilityRepository(this)
+    private var userInput = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,23 +70,23 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
-    fun getSearchName(inputText: EditText) {
+    private fun getSearchName(inputText: EditText) {
         userInput = inputText.text.toString()
-        val url_string = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+        val urlIngredientString = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
 
-        readWebByIngredient(url_string)
+        readWebByIngredient(urlIngredientString)
     }
 
-    fun readWebByIngredient(url_string: String) {
+    private fun readWebByIngredient(urlIngredientString: String) {
         val ingredientStringBuilder = StringBuilder()
 
-        val urlIngredient = URL(url_string)
+        val urlIngredient = URL(urlIngredientString)
         val connectURL: HttpURLConnection = urlIngredient.openConnection() as HttpURLConnection
 
         runBlocking {
             launch {
                 withContext(Dispatchers.IO) {
-                    var ingredientBufReader =
+                    val ingredientBufReader =
                         BufferedReader(InputStreamReader(connectURL.inputStream))
                     var ingredientsLine: String? = ingredientBufReader.readLine()
 
@@ -102,12 +102,12 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
     }
 
-    fun parseIngredientJSON(stb: java.lang.StringBuilder) {
+    private fun parseIngredientJSON(stb: java.lang.StringBuilder) {
         val jsonIngredient = JSONObject(stb.toString())
         val mealsIngredient = java.lang.StringBuilder()
 
         try {
-            var ingredientJsonArray: JSONArray = jsonIngredient.getJSONArray("meals")
+            val ingredientJsonArray: JSONArray = jsonIngredient.getJSONArray("meals")
 
             mealsIngredient.append(ingredientJsonArray)
 
@@ -124,17 +124,17 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
-    fun readFromWeb(eachIngredient: String) {
+    private fun readFromWeb(eachIngredient: String) {
         val stringBuilder = StringBuilder()
 
-        val url_string = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=$eachIngredient"
-        val url = URL(url_string)
+        val urlString = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=$eachIngredient"
+        val url = URL(urlString)
         val connect: HttpURLConnection = url.openConnection() as HttpURLConnection
 
         runBlocking {
             launch {
                 withContext(Dispatchers.IO) {
-                    var bufReader = BufferedReader(InputStreamReader(connect.inputStream))
+                    val bufReader = BufferedReader(InputStreamReader(connect.inputStream))
                     var line: String? = bufReader.readLine()
 
                     while (line != null) {
@@ -149,12 +149,12 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
 
     }
 
-    suspend fun parseJSON(stb: java.lang.StringBuilder) {
+    private fun parseJSON(stb: java.lang.StringBuilder) {
 
         val json = JSONObject(stb.toString())
         val allMeals = java.lang.StringBuilder()
 
-        var jsonArray: JSONArray = json.getJSONArray("meals")
+        val jsonArray: JSONArray = json.getJSONArray("meals")
 
         allMeals.append(jsonArray)
         Log.i("allBooks", allMeals.toString())
@@ -225,12 +225,12 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
-    fun viewMealsInRecycleView() {
+    private fun viewMealsInRecycleView() {
         val adapter = ResultsActivityAdaptor(this, mealsArr, this)
         recyclerView.adapter = adapter
     }
 
-    fun addAllMealsToDB() {
+    private fun addAllMealsToDB() {
         val db = Room.databaseBuilder(this, MealsDatabase::class.java, "mealsDatabase").build()
         val mealDao = db.mealDao()
 
@@ -264,8 +264,8 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         userInput = savedInstanceState.getString("userInput").toString()
 
         if (userInput != "") {
-            val url_string = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
-            readWebByIngredient(url_string)
+            val urlIngredientString = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+            readWebByIngredient(urlIngredientString)
             viewMealsInRecycleView()
 
             btnSaveMeals.isVisible = true
