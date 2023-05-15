@@ -28,7 +28,6 @@ import java.net.URL
 
 class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
-    //    var mealsArr = mutableListOf<Meal>()
     private val getMealsList = MealsList()
     private var mealsArr = getMealsList.mealsArr
 
@@ -72,6 +71,13 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         }
     }
 
+    /**
+     * In here to search by ingredient first search by ingredient using
+     * https://www.themealdb.com/api/json/v1/1/filter.php?i= and it's giving a list of meals names,
+     * but not full details, then putting all retreived meals to jasonArray and again using each
+     * meal's id again search by id using https://www.themealdb.com/api/json/v1/1/lookup.php?i=,
+     * by that stores full meal details in mealsArr.
+     * */
     private fun getSearchName(inputText: EditText) {
         userInput = inputText.text.toString()
         val urlIngredientString = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
@@ -266,7 +272,8 @@ class SearchByIngredient : AppCompatActivity(), ResultsActivityAdaptor.MealItemL
         userInput = savedInstanceState.getString("userInput").toString()
 
         if (userInput != "") {
-            val urlIngredientString = "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
+            val urlIngredientString =
+                "https://www.themealdb.com/api/json/v1/1/filter.php?i=$userInput"
             readWebByIngredient(urlIngredientString)
             viewMealsInRecycleView()
 
