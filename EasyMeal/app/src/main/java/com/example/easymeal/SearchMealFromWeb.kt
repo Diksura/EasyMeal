@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.easymeal.database.Meal
 import com.example.easymeal.repository.MealOnClickPopUp
+import com.example.easymeal.repository.UtilityRepository
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,13 +23,15 @@ import java.net.URL
 
 class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemListener {
 
-    var webSearchMealsArr = mutableListOf<Meal>()
+    private var webSearchMealsArr = mutableListOf<Meal>()
 
     private lateinit var btnWebSearch: ImageButton
     private lateinit var edTxtWebSearchBar: EditText
     private lateinit var recyclerView: RecyclerView
 
-    var userInput = ""
+    private val utilityRepo = UtilityRepository(this)
+
+    private var userInput = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,22 +41,25 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         edTxtWebSearchBar = findViewById(R.id.editTxtSearchWebNm)
         recyclerView = findViewById(R.id.searchFromWebRclView)
 
-        btnWebSearch.setOnClickListener {
-            webSearchMealsArr.clear()
+        utilityRepo.networkCheckAndGiveError()
 
+        btnWebSearch.setOnClickListener {
+            utilityRepo.networkCheckAndGiveError()
+
+            webSearchMealsArr.clear()
             getSearchName(edTxtWebSearchBar)
             viewMealsInRecycleView()
         }
     }
 
-    fun getSearchName(inputText: EditText){
+    private fun getSearchName(inputText: EditText){
         userInput = inputText.text.toString()
 
-        var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
-        readFromWeb(url_string)
+        val urlString = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+        readFromWeb(urlString)
     }
 
-    fun readFromWeb(url_string: String){
+    private fun readFromWeb(url_string: String){
         val stringBuilder = StringBuilder()
 
         val url = URL(url_string)
@@ -63,7 +68,7 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         runBlocking {
             launch {
                 withContext(Dispatchers.IO){
-                    var bufReader = BufferedReader(InputStreamReader(connect.inputStream))
+                    val bufReader = BufferedReader(InputStreamReader(connect.inputStream))
                     var line: String? = bufReader.readLine()
 
                     while (line!= null){
@@ -78,12 +83,12 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
 
     }
 
-    suspend fun parseJSON(stb: java.lang.StringBuilder){
+    private fun parseJSON(stb: java.lang.StringBuilder){
 
         val json = JSONObject(stb.toString())
         val allMeals = java.lang.StringBuilder()
 
-        var jsonArray: JSONArray = json.getJSONArray("meals")
+        val jsonArray: JSONArray = json.getJSONArray("meals")
 
         allMeals.append(jsonArray)
         Log.i("allBooks", allMeals.toString())
@@ -154,7 +159,7 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         }
     }
 
-    fun viewMealsInRecycleView(){
+    private fun viewMealsInRecycleView(){
         val adapter = ResultsActivityAdaptor(this, webSearchMealsArr, this)
         recyclerView.adapter = adapter
     }
@@ -176,8 +181,9 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         userInput = savedInstanceState.getString("userInput").toString()
 
         if (userInput != "") {
-            var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
-            readFromWeb(url_string)
+            utilityRepo.networkCheckAndGiveError()
+            val urlString = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
+            readFromWeb(urlString)
             viewMealsInRecycleView()
         }
     }

@@ -12,7 +12,7 @@ import coil.request.ImageRequest
 import com.example.easymeal.R
 import com.example.easymeal.database.Meal
 
-class ResultsActivityAdaptor(val context: Context, val mealsList: MutableList<Meal>, val itemListener: MealItemListener): RecyclerView.Adapter<ResultsActivityAdaptor.ViewHolder>()
+class ResultsActivityAdaptor(val context: Context, private val mealsList: MutableList<Meal>, private val itemListener: MealItemListener): RecyclerView.Adapter<ResultsActivityAdaptor.ViewHolder>()
 {
 
     override fun getItemCount() = mealsList.size
@@ -38,7 +38,7 @@ class ResultsActivityAdaptor(val context: Context, val mealsList: MutableList<Me
                 it.contentDescription = meal.strCategory
             }
 
-            resltMealThumbnail?.let {imageView ->
+            resultMealThumbnail?.let { imageView ->
                 val imageLoader = ImageLoader(context)
                 val request = ImageRequest.Builder(context)
                     .data(meal.strMealThumb)
@@ -56,7 +56,7 @@ class ResultsActivityAdaptor(val context: Context, val mealsList: MutableList<Me
 
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val resltMealThumbnail = itemView.findViewById<ImageView>(R.id.resultMealThumbnail)
+        val resultMealThumbnail = itemView.findViewById<ImageView>(R.id.resultMealThumbnail)
         val resultMealName = itemView.findViewById<TextView>(R.id.resultMealName)
         val resultMealCategory = itemView.findViewById<TextView>(R.id.resultMealCategory)
 
