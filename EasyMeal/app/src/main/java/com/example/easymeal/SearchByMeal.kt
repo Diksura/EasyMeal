@@ -75,8 +75,9 @@ class SearchByMeal : AppCompatActivity(), ResultsActivityAdaptor.MealItemListene
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
+        searchName = savedInstanceState.getString("searchName").toString()
+
         if (searchName != ""){
-            searchName = savedInstanceState.getString("searchName").toString()
             getDataFromDB(searchName)
         }
     }
