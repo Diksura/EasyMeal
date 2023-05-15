@@ -64,7 +64,7 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:spanCount="2"
-        tools:layout_editor_absoluteY="3dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
