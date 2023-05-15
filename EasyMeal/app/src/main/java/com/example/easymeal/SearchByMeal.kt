@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.easymeal.database.Meal
 import com.example.easymeal.database.MealsDatabase
-import com.example.easymeal.repository.DatabaseRepository
 import com.example.easymeal.repository.MealOnClickPopUp
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.launch

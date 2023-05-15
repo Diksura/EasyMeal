@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.easymeal.database.Meal
 import com.example.easymeal.repository.MealOnClickPopUp
+import com.example.easymeal.repository.UtilityRepository
 import com.example.easymeal.resultMealsView.ResultsActivityAdaptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +29,8 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
     private lateinit var edTxtWebSearchBar: EditText
     private lateinit var recyclerView: RecyclerView
 
+    val utilityRepo = UtilityRepository(this)
+
     var userInput = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +41,12 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         edTxtWebSearchBar = findViewById(R.id.editTxtSearchWebNm)
         recyclerView = findViewById(R.id.searchFromWebRclView)
 
-        btnWebSearch.setOnClickListener {
-            webSearchMealsArr.clear()
+        utilityRepo.networkCheckAndGiveError()
 
+        btnWebSearch.setOnClickListener {
+            utilityRepo.networkCheckAndGiveError()
+
+            webSearchMealsArr.clear()
             getSearchName(edTxtWebSearchBar)
             viewMealsInRecycleView()
         }
@@ -176,6 +181,7 @@ class SearchMealFromWeb : AppCompatActivity(), ResultsActivityAdaptor.MealItemLi
         userInput = savedInstanceState.getString("userInput").toString()
 
         if (userInput != "") {
+            utilityRepo.networkCheckAndGiveError()
             var url_string = "https://www.themealdb.com/api/json/v1/1/search.php?s=$userInput"
             readFromWeb(url_string)
             viewMealsInRecycleView()
