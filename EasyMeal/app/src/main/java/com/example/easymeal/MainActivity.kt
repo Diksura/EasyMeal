@@ -1,3 +1,9 @@
+/*
+* Name - L.P.D. Pasan Diksura
+* UoW - w1867140
+* IIT - 20210415
+* */
+
 package com.example.easymeal
 
 import android.content.Intent
@@ -71,8 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
 }
+
+// References : https://www.linkedin.com/learning/android-development-essential-training-manage-data-with-kotlin?u=76664938
