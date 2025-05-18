@@ -1,4 +1,4 @@
-package com.PasanDiksura.yumio
+package com.pasandiksura.yumio
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

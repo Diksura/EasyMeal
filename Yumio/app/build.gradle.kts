@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.PasanDiksura.yumio"
+    namespace = "com.pasandiksura.yumio"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.PasanDiksura.yumio"
+        applicationId = "com.pasandiksura.yumio"
         minSdk = 33
         targetSdk = 35
         versionCode = 1
